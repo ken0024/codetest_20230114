@@ -40,20 +40,19 @@ def main():
         np_index_start_timeout = np.where(np_index_diff == 1)[0] + 1
         np_index_end_timeout = np.where(np_index_diff == -1)[0] + 1
         # 監視ログファイル最後の記録がタイムアウトである(ファイル内で終了が検出出来ない)場合の判定
-        FLAG_TIMEOUT_CONTINUED = (
-            np_index_end_timeout.size != np_index_start_timeout.size)
-        num_timeout = np_index_end_timeout.size
+
+        if np_index_end_timeout.size != np_index_start_timeout.size:
+            np_index_end_timeout = np.append(
+                [np_index.size-1], np_index_end_timeout)
+        num_timeout = np_index_start_timeout.size
 
         for i in range(num_timeout):
             datetime_start_timeout = df_thisip.iat[np_index_start_timeout[i], 0]
-            if FLAG_TIMEOUT_CONTINUED and i+1 == num_timeout:
-                datetime__end_timeout = ''
-            else:
-                datetime__end_timeout = df_thisip.iat[np_index_end_timeout[i], 0]
+            datetime_end_timeout = df_thisip.iat[np_index_end_timeout[i], 0]
             np_report = np.append(np_report, np.array(
-                [[ip_name, datetime_start_timeout, datetime__end_timeout]]), axis=0)
+                [[ip_name, datetime_start_timeout, datetime_end_timeout]]), axis=0)
             print(ip_name + ',' + datetime_start_timeout +
-                  ','+datetime__end_timeout)
+                  ','+datetime_end_timeout)
 
     columns_report = ['ip', 'datetime_start_timeout', 'datetime_end_timeout']
     df_report = pd.DataFrame(data=np_report, columns=columns_report)
