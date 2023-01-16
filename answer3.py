@@ -1,6 +1,9 @@
+import os
 import pandas as pd
 import numpy as np
 import argparse
+
+PATH_WATCHLIST = os.getcwd()+'/log/watchlist.txt'
 
 
 def get_args():
@@ -13,7 +16,6 @@ def get_args():
                         help='過負荷とみなす直近m個の平均応答時間(msec)  設問3用')
     parser.add_argument('-N', '--numoftimeout',
                         required=True, help='故障とみなす連続タイムアウト回数  設問2用')
-
     return parser.parse_args()
 
 
@@ -22,8 +24,8 @@ def main():
     file = args.file
     N = args.numoftimeout
     file_report = args.dst
-    file_report_overload = './report/report3_overload.csv'
-    file_watchlist = './log/watchlist.txt'
+    file_report_overload = os.getcwd()+'/report/report3_overload.csv'
+    file_watchlist = os.getcwd()+'/log/watchlist.txt'
     m_overload = args.moverload
     time_th_avgresponse = args.timeth
 

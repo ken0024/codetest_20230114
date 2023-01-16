@@ -1,6 +1,9 @@
+import os
 import pandas as pd
 import numpy as np
 import argparse
+
+PATH_WATCHLIST = os.getcwd()+'/log/watchlist.txt'
 
 
 def get_args():
@@ -11,13 +14,14 @@ def get_args():
                         required=True, help='故障とみなす連続タイムアウト回数  設問2用')
     parser.add_argument('-d', '--dst', required=False,
                         help='レポートの出力先のパス 指定しない場合は規定のフォルダ下に出力する')
+    return parser.parse_args()
 
 
 def main():
     args = get_args()
-    file = './log/samplelog.csv'  # args.file
+    file = os.getcwd()+'log/samplelog.csv'  # args.file
     N = 2  # args.numoftimeout
-    name_report = './report/report1_.csv'  # +args.dst
+    name_report = os.getcwd()+'/report/report1_.csv'  # +args.dst
 
     # 監視対象の
     num_watchlist = 4

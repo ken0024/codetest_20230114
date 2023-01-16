@@ -1,9 +1,9 @@
 
-import numpy as np
+import os
 import pandas as pd
+import numpy as np
 import argparse
 import random
-import os
 
 PATH_WATCHLIST = os.getcwd()+'/log/watchlist.txt'
 RESPONSE_TIMEOUT = 1000
