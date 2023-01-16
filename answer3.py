@@ -10,27 +10,29 @@ def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-f', '--file', required=True,
                         help='読み込む監視ログファイルのパス')
-    parser.add_argument('-m', '--mforoverload',
-                        required=True, help='過負荷の判定に使用する直近の監視データの個数  設問3用')
-    parser.add_argument('-t', '--timeth', required=True,
+    parser.add_argument('-m', '--moverload',
+                        required=True, type=int, help='過負荷の判定に使用する直近の監視データの個数  設問3用')
+    parser.add_argument('-t', '--timeth', required=True, type=int,
                         help='過負荷とみなす直近m個の平均応答時間(msec)  設問3用')
-    parser.add_argument('-N', '--numoftimeout',
-                        required=True, help='故障とみなす連続タイムアウト回数  設問2用')
+    parser.add_argument('-N', '--numtimeout',
+                        required=True, type=int, help='故障とみなす連続タイムアウト回数  設問2用')
     return parser.parse_args()
 
 
 def main():
     args = get_args()
     file = args.file
-    N = args.numoftimeout
-    file_report = args.dst
-    file_report_overload = os.getcwd()+'/report/report3_overload.csv'
+    N = args.numtimeout
+    file_report = os.getcwd()+'/report/report3_' + \
+        os.path.basename(file).split('.', 1)[0]+'.csv'
+    file_report_overload = os.getcwd()+'/report/report3_overload_' + \
+        os.path.basename(file).split('.', 1)[0]+'.csv'
     file_watchlist = os.getcwd()+'/log/watchlist.txt'
     m_overload = args.moverload
     time_th_avgresponse = args.timeth
 
     # 監視対象の
-    num_watchlist = len(np.loadtxt(file_watchlist))
+    num_watchlist = len(np.loadtxt(PATH_WATCHLIST, dtype='object').tolist())
     # 監視ファイルの読み込み
     # "-"が含まれているためresponse_msecはstringで読み込む
     dtype_log = {'datetime': 'string',
