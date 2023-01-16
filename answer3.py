@@ -13,22 +13,22 @@ def get_args():
                         help='過負荷とみなす直近m個の平均応答時間(msec)  設問3用')
     parser.add_argument('-N', '--numoftimeout',
                         required=True, help='故障とみなす連続タイムアウト回数  設問2用')
-    parser.add_argument('-d', '--dst', required=False,
-                        help='レポートの出力先のパス 指定しない場合は規定のフォルダ下に出力する')
+
+    return parser.parse_args()
 
 
 def main():
     args = get_args()
-    file = './log/samplelog.csv'  # args.file
-    N = 2  # args.numoftimeout
-    file_report = './report/report3_.csv'  # +args.dst
-    file_report_overload = './report/report3_overload.csv'  # +args.dst
-
-    m_overload = 3  # args.moverload
-    time_th_avgresponse = 500  # args.timeth
+    file = args.file
+    N = args.numoftimeout
+    file_report = args.dst
+    file_report_overload = './report/report3_overload.csv'
+    file_watchlist = './log/watchlist.txt'
+    m_overload = args.moverload
+    time_th_avgresponse = args.timeth
 
     # 監視対象の
-    num_watchlist = 4
+    num_watchlist = len(np.loadtxt(file_watchlist))
     # 監視ファイルの読み込み
     # "-"が含まれているためresponse_msecはstringで読み込む
     dtype_log = {'datetime': 'string',

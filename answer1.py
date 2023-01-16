@@ -35,7 +35,7 @@ def main():
         # 設問1：タイムアウトの始まりと終わりを検出する
         # '-'のときに1、実時間応答があるときは0とする
         np_index = np.where(
-            df_thisip['response_msec'] == '-', 1, 0).astype('int16')
+            df_thisip['response_msec'] == '-', 1, 0).astype('int8')
         np_index_diff = np_index[1:] - np_index[:-1]
         np_index_start_timeout = np.where(np_index_diff == 1)[0] + 1
         np_index_end_timeout = np.where(np_index_diff == -1)[0] + 1
